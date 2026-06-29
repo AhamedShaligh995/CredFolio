@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CredFolio – Professional Certificate Portfolio</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="CredFolio is an open-source, professional certificate organizer and portfolio builder. Securely manage, store, and share your achievements without any data loss.">
+    <meta name="keywords" content="CredFolio, certificate organizer, professional portfolio, open source, credential management, local storage">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="CredFolio – Professional Certificate Portfolio">
+    <meta property="og:description" content="Organize, verify, and showcase your achievements in a clean, interview-ready portfolio.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://credfolio.app/">
+    <meta property="og:site_name" content="CredFolio">
+    
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Ambient Background Gradients -->
+    <div class="ambient-glow bg-glow-1"></div>
+    <div class="ambient-glow bg-glow-2"></div>
+
+    <!-- Notification Toast -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- ==================== AUTH CONTAINER ==================== -->
+    <div id="auth-container" class="auth-wrapper active">
+        <!-- Floating Theme Toggle for Auth Screen -->
+        <div class="auth-theme-toggle-container">
+            <button id="btn-auth-theme-toggle" class="btn-theme-toggle" type="button" title="Toggle Theme">
+                <i data-lucide="moon"></i>
+            </button>
+        </div>
+        <div class="auth-split-layout">
+            <!-- Left Side: Promo Panel -->
+            <div class="auth-promo-panel">
+                <div class="promo-brand">
+                    <div class="promo-logo-wrapper">
+                        <i data-lucide="shield-check" class="promo-logo"></i>
+                    </div>
+                    <span class="promo-brand-text">CredFolio</span>
+                </div>
+                <div class="promo-content">
+                    <h2>Your Professional Credentials, Elevated.</h2>
+                    <p>Organize, verify, and showcase your achievements in a clean, interview-ready portfolio. Designed for ambitious professionals.</p>
+                    <ul class="promo-features">
+                        <li>
+                            <i data-lucide="check-circle-2"></i> 
+                            <span>Dynamic Custom Sections</span>
+                        </li>
+                        <li>
+                            <i data-lucide="file-check"></i> 
+                            <span>Instant Document Previews</span>
+                        </li>
+                        <li>
+                            <i data-lucide="database"></i> 
+                            <span>Zero-Data-Loss Local Backup</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="promo-footer">
+                    <p>© 2026 CredFolio. Built for interview excellence.</p>
+                </div>
+            </div>
+
+            <!-- Right Side: Form Panel -->
+            <div class="auth-form-panel">
+                <div class="auth-card">
+                    <!-- Login View -->
+                    <div id="login-view" class="auth-view">
+                        <h2>Welcome Back</h2>
+                        <p class="subtitle">Enter your credentials to access your CredFolio</p>
+                        
+                        <form id="login-form">
+                            <div class="input-group">
+                                <label for="login-username"><i data-lucide="user"></i> Username</label>
+                                <input type="text" id="login-username" placeholder="e.g. johndoe" required autocomplete="username">
+                            </div>
+                            <div class="input-group">
+                                <label for="login-password"><i data-lucide="lock"></i> Password</label>
+                                <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+                            </div>
+                            
+                            <button type="submit" id="btn-login" class="btn btn-primary btn-block">
+                                Sign In <i data-lucide="arrow-right"></i>
+                            </button>
+                        </form>
+                        
+                        <div class="auth-footer">
+                            <span>Don't have an account?</span>
+                            <button id="go-to-register" class="btn-link">Create Account</button>
+                        </div>
+                    </div>
+
+                    <!-- Register View -->
+                    <div id="register-view" class="auth-view active">
+                        <h2>Create Account</h2>
+                        <p class="subtitle">Set up a local username and password</p>
+                        
+                        <form id="register-form">
+                            <div class="input-group">
+                                <label for="register-username"><i data-lucide="user"></i> Username</label>
+                                <input type="text" id="register-username" placeholder="e.g. johndoe" required autocomplete="new-username">
+                            </div>
+                            <div class="input-group">
+                                <label for="register-password"><i data-lucide="lock"></i> Password</label>
+                                <input type="password" id="register-password" placeholder="••••••••" required autocomplete="new-password">
+                            </div>
+                            <div class="input-group">
+                                <label for="register-confirm-password"><i data-lucide="lock-keyhole"></i> Confirm Password</label>
+                                <input type="password" id="register-confirm-password" placeholder="••••••••" required autocomplete="new-password">
+                            </div>
+                            
+                            <button type="submit" id="btn-register" class="btn btn-primary btn-block">
+                                Register Account <i data-lucide="user-plus"></i>
+                            </button>
+                        </form>
+                        
+                        <div class="auth-footer">
+                            <span>Already have an account?</span>
+                            <button id="go-to-login" class="btn-link">Sign In</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN DASHBOARD CONTAINER ==================== -->
+    <div id="dashboard-container" class="dashboard-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon-sm">
+                    <i data-lucide="shield-check"></i>
+                </div>
+                <h2>CredFolio</h2>
+            </div>
+            
+            <!-- Professional Profile Badge -->
+            <div class="user-profile-badge" id="user-profile-card">
+                <div class="avatar-container">
+                    <div id="profile-avatar" class="profile-avatar">U</div>
+                    <span class="status-dot"></span>
+                </div>
+                <div class="user-info">
+                    <span class="user-welcome">Verified Professional</span>
+                    <span id="session-username" class="user-name">User</span>
+                </div>
+            </div>
+            
+            <!-- Dynamic Sidebar Sections -->
+            <div class="sidebar-menu-wrapper">
+                <nav class="sidebar-menu" id="sidebar-categories">
+                    <!-- Categories will be rendered dynamically by JS -->
+                </nav>
+                <button id="btn-add-section-trigger" class="btn-add-section">
+                    <i data-lucide="plus-circle"></i> Add Section
+                </button>
+            </div>
+            
+            <div class="sidebar-footer">
+                <button id="btn-notebook-trigger" class="btn btn-secondary-outline btn-block" style="margin-bottom: 0.5rem; background-color: var(--surface-hover); color: var(--text-primary); border: 1px solid var(--border-color);">
+                    <i data-lucide="book"></i> Secure Notebook
+                </button>
+                <button id="btn-backup" class="btn btn-secondary-outline btn-block">
+                    <i data-lucide="download-cloud"></i> Backup Data
+                </button>
+                <button id="btn-trigger-restore" class="btn btn-secondary-outline btn-block">
+                    <i data-lucide="upload-cloud"></i> Restore Backup
+                </button>
+                <input type="file" id="restore-file-input" accept=".json" style="display: none;">
+                
+                <button id="btn-logout" class="btn btn-danger-outline btn-block">
+                    <i data-lucide="log-out"></i> Log Out
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- Header Operations -->
+            <header class="content-header">
+                <div class="search-bar-container">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" id="search-input" placeholder="Search certificates by title, tag, or description...">
+                </div>
+                
+                <div class="header-actions">
+                    <button id="btn-dashboard-theme-toggle" class="btn-theme-toggle" type="button" title="Toggle Theme">
+                        <i data-lucide="moon"></i>
+                    </button>
+                    
+                    <select id="sort-select" class="custom-select">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="alpha">Alphabetical (A-Z)</option>
+                    </select>
+                    
+                    <button id="btn-open-upload" class="btn btn-primary">
+                        <i data-lucide="plus"></i> Add Certificate
+                    </button>
+                </div>
+            </header>
+
+            <!-- Stat Cards -->
+            <section class="stats-section">
+                <div class="stat-card stat-total">
+                    <div class="stat-icon icon-purple"><i data-lucide="folder"></i></div>
+                    <div class="stat-details">
+                        <h3 id="stat-total-count">0</h3>
+                        <p>Total Certificates</p>
+                    </div>
+                </div>
+                <div class="stat-card stat-storage">
+                    <div class="stat-icon icon-green"><i data-lucide="hard-drive"></i></div>
+                    <div class="stat-details">
+                        <h3 id="stat-total-size">0.0 MB</h3>
+                        <p>Storage Used</p>
+                    </div>
+                </div>
+                <div class="stat-card stat-sections">
+                    <div class="stat-icon icon-yellow"><i data-lucide="layers"></i></div>
+                    <div class="stat-details">
+                        <h3 id="stat-sections-count">0</h3>
+                        <p>Active Sections</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Certificate Directory -->
+            <section class="directory-section">
+                <div class="section-title-row">
+                    <h2 id="current-view-title">All Certificates</h2>
+                    <span id="result-count" class="count-badge">0 files</span>
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="empty-state">
+                    <div class="empty-illustration">
+                        <i data-lucide="file-warning"></i>
+                    </div>
+                    <h3>No certificates found</h3>
+                    <p>Get started by uploading your first certificate, diploma, or letter of recommendation.</p>
+                    <button id="empty-state-upload-btn" class="btn btn-primary">
+                        <i data-lucide="plus"></i> Upload Now
+                    </button>
+                </div>
+
+                <!-- Certificate Grid -->
+                <div id="certificate-grid" class="certificate-grid active">
+                    <!-- Cards will be injected dynamically -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ==================== UPLOAD MODAL ==================== -->
+    <div id="upload-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Certificate</h2>
+                <button class="modal-close" id="btn-close-upload"><i data-lucide="x"></i></button>
+            </div>
+            <form id="upload-form" class="modal-body">
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="upload-title">Certificate Title *</label>
+                        <input type="text" id="upload-title" placeholder="e.g. React Development Course" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="upload-category">Category *</label>
+                        <select id="upload-category" class="custom-select" required>
+                            <!-- Dynamically populated -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="upload-description">Description</label>
+                        <textarea id="upload-description" rows="3" placeholder="Add details such as institution, skills learned, or key credentials..."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>File Upload *</label>
+                        <div id="drop-zone" class="drop-zone">
+                            <i data-lucide="upload" class="drop-icon"></i>
+                            <p class="drop-text">Drag & drop your file here or <span class="browse-link">browse</span></p>
+                            <p class="drop-hint">Supports PDF, JPEG, PNG, GIF (Max 10MB)</p>
+                            <input type="file" id="file-input" required accept=".pdf,image/*" style="display: none;">
+                        </div>
+                        <div id="file-preview-indicator" class="file-preview-indicator">
+                            <i data-lucide="file-text" class="preview-icon"></i>
+                            <div class="preview-details">
+                                <span id="preview-filename" class="preview-filename">filename.pdf</span>
+                                <span id="preview-filesize" class="preview-filesize">2.4 MB</span>
+                            </div>
+                            <button type="button" id="btn-remove-file" class="btn-icon-danger"><i data-lucide="trash-2"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="upload-notes">Notes</label>
+                        <textarea id="upload-notes" rows="3" placeholder="Add personal notes, reminders, or remarks here..."></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="btn-cancel-upload" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" id="btn-submit-upload" class="btn btn-primary">
+                        Save Certificate <i data-lucide="check"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== EDIT MODAL ==================== -->
+    <div id="edit-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Certificate</h2>
+                <button class="modal-close" id="btn-close-edit"><i data-lucide="x"></i></button>
+            </div>
+            <form id="edit-form" class="modal-body">
+                <input type="hidden" id="edit-id">
+                
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="edit-title">Certificate Title *</label>
+                        <input type="text" id="edit-title" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="edit-category">Category *</label>
+                        <select id="edit-category" class="custom-select" required>
+                            <!-- Dynamically populated -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="edit-description">Description</label>
+                        <textarea id="edit-description" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="edit-notes">Notes</label>
+                        <textarea id="edit-notes" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Replace File (Optional)</label>
+                        <div id="edit-drop-zone" class="drop-zone">
+                            <i data-lucide="upload" class="drop-icon"></i>
+                            <p class="drop-text">Drag & drop new file to replace or <span class="browse-link">browse</span></p>
+                            <input type="file" id="edit-file-input" accept=".pdf,image/*" style="display: none;">
+                        </div>
+                        <div id="edit-file-preview-indicator" class="file-preview-indicator">
+                            <i data-lucide="file-text" class="preview-icon"></i>
+                            <div class="preview-details">
+                                <span id="edit-preview-filename" class="preview-filename">filename.pdf</span>
+                                <span id="edit-preview-filesize" class="preview-filesize">2.4 MB</span>
+                            </div>
+                            <button type="button" id="btn-edit-remove-file" class="btn-icon-danger"><i data-lucide="trash-2"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="btn-cancel-edit" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" id="btn-submit-edit" class="btn btn-primary">
+                        Save Changes <i data-lucide="check"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== ADD SECTION MODAL ==================== -->
+    <div id="add-section-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Custom Section</h2>
+                <button class="modal-close" id="btn-close-add-section"><i data-lucide="x"></i></button>
+            </div>
+            <form id="add-section-form" class="modal-body">
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="new-section-name">Section Name *</label>
+                        <input type="text" id="new-section-name" placeholder="e.g. Worksheets or Publications" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="input-group">
+                        <label>Select Icon *</label>
+                        <div id="icon-picker-grid" class="icon-picker-grid">
+                            <!-- Injected dynamically by JS -->
+                        </div>
+                        <input type="hidden" id="new-section-icon" value="folder" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn-cancel-add-section" class="btn btn-secondary">Cancel</button>
+                    <button type="submit" id="btn-submit-add-section" class="btn btn-primary">
+                        Create Section <i data-lucide="check"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== PREVIEW MODAL ==================== -->
+    <div id="preview-modal" class="modal-overlay">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <div class="preview-header-info">
+                    <h2 id="preview-modal-title">Certificate Preview</h2>
+                    <span id="preview-modal-category" class="category-badge">Education</span>
+                </div>
+                <div class="preview-actions">
+                    <a id="btn-preview-download" class="btn btn-secondary" download>
+                        <i data-lucide="download"></i> Download
+                    </a>
+                    <button class="modal-close" id="btn-close-preview"><i data-lucide="x"></i></button>
+                </div>
+            </div>
+            <div class="modal-body preview-body">
+                <div id="preview-loader" class="preview-loader">
+                    <div class="spinner"></div>
+                    <p>Loading document preview...</p>
+                </div>
+                <div id="preview-frame-container" class="preview-frame-container">
+                    <!-- Dynamic iFrame, object or img will be inserted here -->
+                </div>
+                <div id="preview-no-preview" class="preview-no-preview">
+                    <i data-lucide="eye-off"></i>
+                    <p>No inline preview available for this file type.</p>
+                    <p class="subhint">You can download the certificate using the button above to view it.</p>
+                </div>
+                <div id="preview-notes-container" class="preview-notes-container" style="display: none;">
+                    <h3><i data-lucide="sticky-note"></i> Notes</h3>
+                    <p id="preview-notes-content"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- ==================== NOTEBOOK MODAL ==================== -->
+    <div id="notebook-modal" class="modal-overlay">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2><i data-lucide="book"></i> Secure Notebook</h2>
+                <button class="modal-close" id="btn-close-notebook"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <div style="display: flex; gap: 10px; margin-bottom: 1rem; align-items: center;">
+                    <label for="notebook-select">Select Notebook:</label>
+                    <select id="notebook-select" class="custom-select" style="flex: 1;">
+                        <option value="default">Main Notes</option>
+                        <option value="passwords">Passwords</option>
+                        <option value="work">Work Notes</option>
+                        <option disabled>──────────</option>
+                        <option value="create_new">+ Create Your Own</option>
+                    </select>
+                </div>
+                <textarea id="notebook-textarea" rows="15" style="width: 100%; padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-primary); color: var(--text-primary); font-family: inherit; resize: vertical;" placeholder="Write your important notes here..."></textarea>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: space-between;">
+                <button type="button" id="btn-delete-notebook" class="btn btn-danger-outline" style="display: none;">
+                    <i data-lucide="trash-2"></i> Delete Notebook
+                </button>
+                <button type="button" id="btn-save-notebook" class="btn btn-primary" style="background-color: #ec4899; box-shadow: 0 4px 16px rgba(236, 72, 153, 0.3);">
+                    Save Notes <i data-lucide="save"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== APP SCRIPTS ==================== -->
+    <script src="app.js"></script>
+</body>
+</html>
